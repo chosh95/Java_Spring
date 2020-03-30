@@ -12,7 +12,7 @@
 								
 	<annotation-driven/>
 	
-	<context:component-scan base-package="kr.co.controller"/>
+	<context:component-scan base-package="kr.com.controller"/>
 					
 	<!-- Controller의 메소드에서 반환하는 문자열 앞, 뒤에 붙일 경로 세팅 -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
