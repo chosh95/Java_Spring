@@ -162,7 +162,7 @@
       <Context docBase="GetParameterObject" path="/GetParameterObject" reloadable="true" source="org.eclipse.jst.jee.server:GetParameterObject"/>
       <Context docBase="ViewResolver" path="/ViewResolver" reloadable="true" source="org.eclipse.jst.jee.server:ViewResolver"/>
       <Context docBase="CommandObject" path="/CommandObject" reloadable="true" source="org.eclipse.jst.jee.server:CommandObject"/>
-      <Context docBase="FormCustomTag" path="/FormCustomTag" reloadable="true" source="org.eclipse.jst.jee.server:FormCustomTag"/><Context docBase="FormElement1" path="/FormElement1" reloadable="true" source="org.eclipse.jst.jee.server:FormElement1"/><Context docBase="FormElement2" path="/FormElement2" reloadable="true" source="org.eclipse.jst.jee.server:FormElement2"/></Host>
+      <Context docBase="FormCustomTag" path="/FormCustomTag" reloadable="true" source="org.eclipse.jst.jee.server:FormCustomTag"/><Context docBase="FormElement1" path="/FormElement1" reloadable="true" source="org.eclipse.jst.jee.server:FormElement1"/><Context docBase="FormElement2" path="/FormElement2" reloadable="true" source="org.eclipse.jst.jee.server:FormElement2"/><Context docBase="RedirectForward" path="/RedirectForward" reloadable="true" source="org.eclipse.jst.jee.server:RedirectForward"/><Context docBase="RequestScope" path="/RequestScope" reloadable="true" source="org.eclipse.jst.jee.server:RequestScope"/><Context docBase="RequestScopeBeanJava" path="/RequestScopeBeanJava" reloadable="true" source="org.eclipse.jst.jee.server:RequestScopeBeanJava"/><Context docBase="RequestScopeBeanXml" path="/RequestScopeBeanXml" reloadable="true" source="org.eclipse.jst.jee.server:RequestScopeBeanXml"/></Host>
     </Engine>
   </Service>
 </Server>
