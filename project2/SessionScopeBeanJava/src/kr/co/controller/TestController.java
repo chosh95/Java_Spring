@@ -22,7 +22,7 @@ public class TestController {
 	DataBean2 sessionBean2;
 	
 	@Autowired
-	DataBean3 sessionBean3;
+	DataBean3 sessionBean3;pp
 	
 	@Resource(name="sessionBean4")
 	DataBean4 sessionBean4;
