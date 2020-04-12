@@ -4,17 +4,23 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.interceptor.TopMenuInterceptor;
 import kr.co.mapper.BoardMapper;
+import kr.co.mapper.TopMenuMapper;
+import kr.co.service.TopMenuService;
 
 //Spring MVC 프로젝트에 관련된 설정을 하는 클래스
 @Configuration
@@ -22,6 +28,8 @@ import kr.co.mapper.BoardMapper;
 @EnableWebMvc
 //스캔할 패키지를 지정한다.
 @ComponentScan("kr.co.controller")
+@ComponentScan("kr.co.dao")
+@ComponentScan("kr.co.service")
 @PropertySource("/WEB-INF/properties/db.properties")
 public class ServletAppContext implements WebMvcConfigurer{
 	
@@ -36,6 +44,9 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Value("${db.password}")
 	private String db_password;
+	
+	@Autowired
+	private TopMenuService topMenuService;
 	
 	//controller의 메소드가 반환하는 jsp의 이름 앞뒤에 경로와 확장자를 붙여준다.
 	@Override
@@ -80,5 +91,22 @@ public class ServletAppContext implements WebMvcConfigurer{
 		MapperFactoryBean<BoardMapper> factoryBean = new MapperFactoryBean<BoardMapper>(BoardMapper.class);
 		factoryBean.setSqlSessionFactory(factory);
 		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<TopMenuMapper> getTopMenuMapper(SqlSessionFactory factory) throws Exception{
+		MapperFactoryBean<TopMenuMapper> factoryBean = new MapperFactoryBean<TopMenuMapper>(TopMenuMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		WebMvcConfigurer.super.addInterceptors(registry);
+		
+		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService);
+		
+		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
+		reg1.addPathPatterns("/**");
 	}
 }
