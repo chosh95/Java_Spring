@@ -1,10 +1,33 @@
 package kr.co.beans;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class UserBean {
 	private int user_idx;
+	
+	@Size(min=2,max=4)
+	@Pattern(regexp="[가-힣]*")
 	private String user_name;
+	
+	@Size(min=4,max=20)
+	@Pattern(regexp="[a-zA-z0-9]*")
 	private String user_id;
+	
+	@Size(min=4,max=20)
+	@Pattern(regexp="[a-zA-z0-9]*")
 	private String user_pw;
+	
+	@Size(min=4,max=20)
+	@Pattern(regexp="[a-zA-z0-9]*")
+	private String user_pw2;
+	
+	private boolean userIdExist;
+	
+	public UserBean() {
+		this.userIdExist = false;
+	}
+	
 	public int getUser_idx() {
 		return user_idx;
 	}
@@ -28,6 +51,20 @@ public class UserBean {
 	}
 	public void setUser_pw(String user_pw) {
 		this.user_pw = user_pw;
+	}
+	public String getUser_pw2() {
+		return user_pw2;
+	}
+	public void setUser_pw2(String user_pw2) {
+		this.user_pw2 = user_pw2;
+	}
+
+	public boolean isUserIdExist() {
+		return userIdExist;
+	}
+
+	public void setUserIdExist(boolean userIdExist) {
+		this.userIdExist = userIdExist;
 	}
 	
 }
