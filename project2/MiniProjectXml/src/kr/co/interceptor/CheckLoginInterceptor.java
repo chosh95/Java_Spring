@@ -1,24 +1,16 @@
 package kr.co.interceptor;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import kr.co.beans.BoardInfoBean;
 import kr.co.beans.UserBean;
-import kr.co.service.TopMenuService;
 
-public class TopMenuInterceptor implements HandlerInterceptor{
+public class CheckLoginInterceptor implements HandlerInterceptor{
 
-	@Autowired
-	private TopMenuService topMenuService;
-	
 	@Resource(name="loginUserBean")
 	@Lazy
 	private UserBean loginUserBean;
@@ -26,11 +18,13 @@ public class TopMenuInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-			
-		List<BoardInfoBean> topMenuList = topMenuService.getTopMenuList();
-		request.setAttribute("topMenuList", topMenuList);
-		request.setAttribute("loginUserBean", loginUserBean);
-
+		
+		//로그인 안 된경우 
+		if(loginUserBean.isUserLogin()==false) { 
+			String contextPath = request.getContextPath();
+			response.sendRedirect(contextPath+"/user/not_login");
+			return false; //preHandle에서 false 반환하면 다음 단계로 건너가지 않고 여기서 끝나게 된다. 
+		}
 		return true;
 	}
 }

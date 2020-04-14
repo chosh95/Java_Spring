@@ -16,4 +16,8 @@ public interface UserMapper {
 			"values (user_seq.nextval, #{user_name}, #{user_id}, #{user_pw})")
 	void addUserInfo(UserBean joinUserBean);
 			
+	@Select("select user_idx, user_name " + 
+			"from user_table " + 
+			"where user_id=#{user_id} and user_pw=#{user_pw}")
+	UserBean getLoginUserInfo(UserBean tempLoginUserBean);
 }

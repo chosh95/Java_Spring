@@ -53,6 +53,13 @@
 			<mapping path="/**"/>
 			<beans:bean class='kr.co.interceptor.TopMenuInterceptor'/>
 		</interceptor>
+		<interceptor>
+			<mapping path="/user/modify"/>
+			<mapping path="/user/logout"/>
+			<mapping path="/board/*"/>
+			<exclude-mapping path="/board/main"/>
+			<beans:bean class="kr.co.interceptor.CheckLoginInterceptor"/>
+		</interceptor>
 	</interceptors>
 	
 	<!-- MessageSource 등록 -->

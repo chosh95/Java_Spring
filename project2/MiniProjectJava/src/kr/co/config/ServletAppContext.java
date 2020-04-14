@@ -1,5 +1,7 @@
 package kr.co.config;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -19,6 +21,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.beans.UserBean;
+import kr.co.interceptor.CheckLoginInterceptor;
 import kr.co.interceptor.TopMenuInterceptor;
 import kr.co.mapper.BoardMapper;
 import kr.co.mapper.TopMenuMapper;
@@ -50,6 +54,9 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Autowired
 	private TopMenuService topMenuService;
+	
+	@Resource(name="loginUserBean")
+	private UserBean loginUserBean;
 	
 	//controller의 메소드가 반환하는 jsp의 이름 앞뒤에 경로와 확장자를 붙여준다.
 	@Override
@@ -114,10 +121,15 @@ public class ServletAppContext implements WebMvcConfigurer{
 	public void addInterceptors(InterceptorRegistry registry) {
 		WebMvcConfigurer.super.addInterceptors(registry);
 		
-		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService);
+		TopMenuInterceptor topMenuInterceptor = new TopMenuInterceptor(topMenuService, loginUserBean);
 		
 		InterceptorRegistration reg1 = registry.addInterceptor(topMenuInterceptor);
 		reg1.addPathPatterns("/**");
+		
+		CheckLoginInterceptor checkLoginInterceptor = new CheckLoginInterceptor(loginUserBean);
+		InterceptorRegistration reg2 = registry.addInterceptor(checkLoginInterceptor);
+		reg2.addPathPatterns("/user/modify","/user/logout","/board/*");
+		reg2.excludePathPatterns("/board/main");
 	}
 	
 	//메세지 객체랑 db.properties랑 충돌이 일어나는걸 방지하기 위해 빈을 정의.
