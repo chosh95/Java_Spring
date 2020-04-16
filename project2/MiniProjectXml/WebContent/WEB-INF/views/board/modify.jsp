@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var='root' value='${pageContext.request.contextPath}/'/>
 <!DOCTYPE html>
 <html>
@@ -14,7 +13,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 
@@ -26,31 +24,35 @@
 		<div class="col-sm-6">
 			<div class="card shadow">
 				<div class="card-body">
-					<form:form action="${root }/user/modify_pro" method='post' modelAttribute="modifyUserBean"> 
+					<form action="${root }board/read" method="get">
 						<div class="form-group">
-							<form:label path="user_name">이름</form:label>
-							<form:input path="user_name" class="form-control" readonly="true"/>
-						</div>
-						<div class="form-group">
-							<form:label path="user_id">아이디</form:label>
-							<form:input path="user_id" class="form-control" readonly="true"/>
+							<label for="board_writer_name">작성자</label>
+							<input type="text" id="board_writer_name" name="board_writer_name" class="form-control" value="홍길동" disabled="disabled"/>
 						</div>
 						<div class="form-group">
-							<form:label path="user_pw">비밀번호</form:label>
-							<form:password path="user_pw" class="form-control"/>
-							<form:errors path="user_pw" style='color:red'/>
+							<label for="board_date">작성날짜</label>
+							<input type="text" id="board_date" name="board_date" class="form-control" value="2018-7-20" disabled="disabled"/>
 						</div>
 						<div class="form-group">
-							<form:label path="user_pw2">비밀번호 확인</form:label>
-							<form:password path="user_pw2" class="form-control"/>
-							<form:errors path="user_pw2" style='color:red'/>
+							<label for="board_subject">제목</label>
+							<input type="text" id="board_subject" name="board_subject" class="form-control" value="제목입니다"/>
 						</div>
-					<div class="form-group">
-						<div class="text-right">
-							<form:button class='btn btn-primary'>정보수정</form:button>
+						<div class="form-group">
+							<label for="board_content">내용</label>
+							<textarea id="board_content" name="board_content" class="form-control" rows="10" style="resize:none">본문입니다</textarea>
 						</div>
-					</div>
-					</form:form>
+						<div class="form-group">
+							<label for="board_file">첨부 이미지</label>
+							<img src="${root }image/logo.png" width="100%"/>	
+							<input type="file" name="board_file" id="board_file" class="form-control" accept="image/*"/>					
+						</div>
+						<div class="form-group">
+							<div class="text-right">
+								<button type="submit" class="btn btn-primary">수정완료</button>
+								<a href="${root }board/read" class="btn btn-info">취소</a>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
