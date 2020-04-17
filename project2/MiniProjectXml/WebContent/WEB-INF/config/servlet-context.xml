@@ -27,8 +27,11 @@
 	
 	<!-- properties 사용 가능하도록 -->
 	<beans:bean class='org.springframework.beans.factory.config.PropertyPlaceholderConfigurer'>
-		<beans:property name="location">
-		<beans:value>/WEB-INF/properties/db.properties</beans:value>
+		<beans:property name="locations">
+			<beans:list>
+				<beans:value>/WEB-INF/properties/db.properties</beans:value>
+				<beans:value>/WEB-INF/properties/option.properties</beans:value>
+			</beans:list>
 		</beans:property>
 	</beans:bean>
 	
@@ -75,4 +78,8 @@
 	<beans:bean class='org.springframework.context.support.MessageSourceAccessor'>
 		<beans:constructor-arg ref='messageSource'/>
 	</beans:bean>
+	
+	<!-- 파일 등록을 위한. -->
+	<beans:bean class='org.springframework.web.multipart.support.StandardServletMultipartResolver'
+				id='multipartResolver'/>
 </beans:beans>

@@ -25,7 +25,8 @@
 		<div class="col-sm-6">
 			<div class="card shadow">
 				<div class="card-body">
-					<form:form action="${root }board/write_pro" method='post' modelAttribute="writeContentBean">
+					<form:form action="${root }board/write_pro" method="post" modelAttribute="writeContentBean" enctype='multipart/form-data'>
+						<form:hidden path='content_board_idx'/>
 						<div class="form-group">
 							<form:label path="content_subject">제목</form:label>
 							<form:input path="content_subject" class='form-control'/>
@@ -38,7 +39,7 @@
 						</div>
 						<div class="form-group">
 							<form:label path='content_file'>첨부 이미지</form:label>
-							<form:input type='file' path='content_file' class="form-control" accept="image/*"/>
+							<form:input type='file' path='upload_file' class="form-control" accept="image/*"/>
 						</div>
 						<div class="form-group">
 							<div class="text-right">
