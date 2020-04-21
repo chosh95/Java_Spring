@@ -63,6 +63,11 @@
 			<exclude-mapping path="/board/main"/>
 			<beans:bean class="kr.co.interceptor.CheckLoginInterceptor"/>
 		</interceptor>
+		<interceptor>
+			<mapping path="board/modify"/>
+			<mapping path="board/delete"/>
+			<beans:bean class="kr.co.interceptor.CheckWriterInterceptor"/>
+		</interceptor>
 	</interceptors>
 	
 	<!-- MessageSource 등록 -->
