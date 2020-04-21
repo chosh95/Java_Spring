@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.beans.ContentBean;
+import kr.co.beans.PageBean;
 import kr.co.beans.UserBean;
 import kr.co.service.BoardService;
 
@@ -32,31 +33,41 @@ public class BoardController {
 	private UserBean loginUserBean;
 
 	@GetMapping("/main")
-	public String main(@RequestParam("board_info_idx") int board_info_idx, Model model) {
-
+	public String main(@RequestParam("board_info_idx") int board_info_idx,
+						@RequestParam(value="page", defaultValue = "1") int page,
+						Model model) {
+		
 		model.addAttribute("board_info_idx", board_info_idx);
-
+		
 		String boardInfoName = boardService.getBoardInfoName(board_info_idx);
-		model.addAttribute("boardInfoName", boardInfoName);
-
-		List<ContentBean> contentList = boardService.getContentList(board_info_idx);
+		model.addAttribute("boardInfoName",boardInfoName);
+		
+		List<ContentBean> contentList = boardService.getContentList(board_info_idx, page);
 		model.addAttribute("contentList", contentList);
-
+		
+		PageBean pageBean = boardService.getContentCnt(board_info_idx, page);
+		model.addAttribute("pageBean", pageBean);
+		
+		model.addAttribute("page", page);
+		
 		return "board/main";
 	}
-
+	
 	@GetMapping("/read")
-	public String read(@RequestParam("board_info_idx") int board_info_idx, @RequestParam("content_idx") int content_idx,
-			Model model) {
-
-		model.addAttribute("board_info_idx", board_info_idx);
+	public String read(@RequestParam("board_info_idx") int board_info_idx,
+						@RequestParam("content_idx") int content_idx,
+						@RequestParam("page") int page,
+						Model model) {
+		
+		model.addAttribute("board_info_idx",  board_info_idx);
 		model.addAttribute("content_idx", content_idx);
-
+		
 		ContentBean readContentBean = boardService.getContentInfo(content_idx);
 		model.addAttribute("readContentBean", readContentBean);
-
+		
 		model.addAttribute("loginUserBean", loginUserBean);
-
+		model.addAttribute("page", page);
+		
 		return "board/read";
 	}
 
@@ -85,6 +96,7 @@ public class BoardController {
 	public String modify(@RequestParam("board_info_idx") int board_info_idx,
 						 @RequestParam("content_idx") int content_idx,
 						 @ModelAttribute("modifyContentBean") ContentBean modifyContentBean,
+						 @RequestParam("page") int page,
 						 Model model) {
 		
 		model.addAttribute("board_info_idx", board_info_idx);
@@ -101,12 +113,18 @@ public class BoardController {
 		modifyContentBean.setContent_board_idx(board_info_idx);
 		modifyContentBean.setContent_idx(content_idx);
 
+		model.addAttribute("page", page);
+		
 		return "board/modify";
 	}
 	
 	@PostMapping("/modify_pro")
 	public String modify_pro(@Valid @ModelAttribute("modifyContentBean") ContentBean modifyContentBean,
-							 BindingResult result) {
+							@RequestParam("page") int page,
+							 BindingResult result,
+							 Model model) {
+		model.addAttribute("page", page);
+		
 		if(result.hasErrors()) {
 			return "board/modify";
 		}
@@ -117,7 +135,14 @@ public class BoardController {
 	}
 	
 	@GetMapping("/delete")
-	public String delete() {
+	public String delete(@RequestParam("content_idx") int content_idx,
+						 @RequestParam("board_info_idx") int board_info_idx,
+						 Model model) {
+		
+		boardService.deleteContentInfo(content_idx);
+		
+		model.addAttribute("board_info_idx", board_info_idx);
+		
 		return "board/delete";
 	}
 
